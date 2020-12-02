@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: r2dbc-test
+    
+# R2DBC URL
+r2dbc:
+  url: r2dbc:h2:mem://./testdb
+
+logging:
+  level:
+    org.springframework.data.r2dbc: DEBUG
+
+  pattern:
+    console: "[%thread] [%X] - %-5level %logger{36}.%M - %msg%n"    
