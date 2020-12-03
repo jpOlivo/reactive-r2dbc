@@ -14,7 +14,8 @@ import reactor.netty.http.server.logging.AccessLog;
 import reactor.netty.http.server.logging.AccessLogArgProvider;
 
 @Component
-public class NettyWebServerAccessLogFactoryCustomizer implements WebServerFactoryCustomizer<NettyReactiveWebServerFactory> {
+public class NettyWebServerAccessLogFactoryCustomizer
+		implements WebServerFactoryCustomizer<NettyReactiveWebServerFactory> {
 
 	@Override
 	public void customize(NettyReactiveWebServerFactory serverFactory) {
@@ -30,7 +31,7 @@ public class NettyWebServerAccessLogFactoryCustomizer implements WebServerFactor
 
 		}
 
-		static final String CUSTOM_LOG_FORMAT = "{\"timestamp\":\"{}\",\"remote_host\":\"{}\",\"remote_user\":\"{}\",\"requested_url\":\"{}\",\"status_code\":\"{}\",\"content_length\":\"{}\",\"elapsed_time\":\"{}\",\"request_headers\":{\"x-correlation-id\":\"{}\"}}";
+		static final String CUSTOM_LOG_FORMAT = "{\"timestamp\":\"{}\",\"remote_host\":\"{}\",\"remote_user\":\"{}\",\"requested_url\":\"{}\",\"status_code\":\"{}\",\"content_length\":\"{}\",\"elapsed_time\":\"{}\",\"request_headers\":{\"x-correlation-id\":\"{}\",\"Authorization\":\"{}\"}}";
 		static final Function<AccessLogArgProvider, AccessLog> CUSTOM_ACCESS_LOG = args -> AccessLog.create(
 				CUSTOM_LOG_FORMAT,
 				ZonedDateTime.parse(args.zonedDateTime(), DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z"))
@@ -38,7 +39,8 @@ public class NettyWebServerAccessLogFactoryCustomizer implements WebServerFactor
 				args.remoteAddress(), args.user(),
 				new StringBuilder(args.method()).append(" ").append(args.uri()).append(" ").append(args.protocol())
 						.toString(),
-				args.status(), args.contentLength(), args.duration(), args.requestHeader("x-correlation-id"));
+				args.status(), args.contentLength(), args.duration(), args.requestHeader("x-correlation-id"),
+				args.requestHeader("Authorization"));
 
 		@Override
 		public HttpServer apply(HttpServer httpServer) {

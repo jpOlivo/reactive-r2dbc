@@ -6,8 +6,8 @@
 			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 			<providers>
 				<globalCustomFields>
-                    <customFields>{"event_type":"logging"}</customFields>
-                </globalCustomFields>
+					<customFields>{"event_type":"logging"}</customFields>
+				</globalCustomFields>
 				<nestedField>
 					<fieldName>event</fieldName>
 					<providers>
@@ -50,6 +50,11 @@
 		class="ch.qos.logback.core.ConsoleAppender">
 		<encoder
 			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<jsonGeneratorDecorator
+				class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+				<defaultMask>****</defaultMask>
+				<path>event/request_headers/Authorization</path>
+			</jsonGeneratorDecorator>
 			<providers>
 				<pattern>
 					<pattern>
@@ -72,8 +77,6 @@
 		additivity="false">
 		<appender-ref ref="async" />
 	</logger>
-
-
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
