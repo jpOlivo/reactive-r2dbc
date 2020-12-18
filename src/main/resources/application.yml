@@ -12,3 +12,7 @@ logging:
 
   pattern:
     console: "[%thread] [%X] - %-5level %logger{36}.%M - %msg%n"    
+    
+
+management:
+  endpoints.web.base-path: "/"    
