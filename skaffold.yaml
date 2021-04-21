@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2beta13
+kind: Config
+metadata:
+  name: reactive-r2dbc
+build:
+  local:
+    push: true # Setting false will not push the image to remote repository
+  artifacts:
+    - image: jpolivo/reactive-r2dbc
+      jib:
+        args:
+          - -Pjib
+  tagPolicy:
+    gitCommit: {}
+deploy:
+  kubectl:
+    manifests:
+      - k8s/knative-service.yaml

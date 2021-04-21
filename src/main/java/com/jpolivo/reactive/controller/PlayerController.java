@@ -1,6 +1,7 @@
 package com.jpolivo.reactive.controller;
 
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import com.jpolivo.reactive.service.PlayerService;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 
 @RestController
@@ -19,6 +21,9 @@ public class PlayerController {
 
 	private PlayerService playerService;
 	private Logger logHelper;
+	
+	@Value("#{environment.REVISION}")
+	private String revision;
 
 	public PlayerController(PlayerService playerService, Logger logHelper) {
 		super();
@@ -50,6 +55,11 @@ public class PlayerController {
 		} finally {
 			MDC.remove("x-correlation-id");
 		}
+	}
+	
+	@GetMapping("/revision")
+	public Mono<String> revision() {
+		return Mono.justOrEmpty(revision);
 	}
 
 	

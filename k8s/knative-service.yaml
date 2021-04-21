@@ -1,0 +1,31 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: reactive-r2dbc
+  namespace: demo-knative
+spec:
+  template:
+    metadata:
+      name: reactive-r2dbc-v1
+      annotations:
+        autoscaling.knative.dev/target: "20"
+    spec:
+      containers:
+        - image: jpolivo/reactive-r2dbc
+          #imagePullPolicy: Never
+          env:
+            - name: REVISION
+              value: "v1"
+          livenessProbe:
+            httpGet:
+              path: /health/liveness
+          readinessProbe:
+            httpGet:
+              path: /health/readiness
+  traffic:
+    - tag: v1
+      revisionName: reactive-r2dbc-v1
+      percent: 75
+    - tag: v2
+      revisionName: reactive-r2dbc-v2
+      percent: 25            

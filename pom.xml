@@ -88,4 +88,31 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>jib</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.google.cloud.tools</groupId>
+						<artifactId>jib-maven-plugin</artifactId>
+						<version>3.0.0</version>
+						<configuration>
+							<to>
+								<image>docker.io/jpolivo/reactive-r2dbc</image>
+								<auth>
+									<username>jpolivo</username>
+									<password>Natalia01</password>
+								</auth>
+							</to>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
