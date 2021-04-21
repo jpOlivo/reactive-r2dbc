@@ -104,8 +104,8 @@
 							<to>
 								<image>docker.io/jpolivo/reactive-r2dbc</image>
 								<auth>
-									<username>jpolivo</username>
-									<password>Natalia01</password>
+									<username></username>
+									<password></password>
 								</auth>
 							</to>
 						</configuration>
