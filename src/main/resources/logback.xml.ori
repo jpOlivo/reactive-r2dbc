@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Spring Native support Logback, but not configuration with logback.xml so please configure it with application.properties or application.yml for now, 
+see #625 for more details. https://github.com/spring-projects-experimental/spring-native/issues/625 -->
+
 <configuration>
 	<appender name="STDOUT"
 		class="ch.qos.logback.core.ConsoleAppender">

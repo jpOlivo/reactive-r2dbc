@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.0</version>
+		<version>2.4.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.jpolivo</groupId>
-	<artifactId>reactive-r2dbc</artifactId>
+	<artifactId>reactive-r2dbc-native</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>reactive-r2dbc</name>
+	<name>reactive-r2dbc-native</name>
 	<description>Demo full reactive microservice with r2dbc</description>
 
 	<properties>
@@ -62,10 +62,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		<!-- dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-devtools</artifactId> 
+			<optional>true</optional> </dependency -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
+			<groupId>org.springframework.experimental</groupId>
+			<artifactId>spring-native</artifactId>
+			<version>0.9.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -84,6 +86,38 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<builder>paketobuildpacks/builder:tiny</builder>
+						<env>
+							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+								-H:+ReportExceptionStackTraces
+								--trace-class-initialization=com.fasterxml.jackson.databind.type.TypeBase,com.fasterxml.jackson.core.json.ReaderBasedJsonParser,com.fasterxml.jackson.core.util.BufferRecyclers,net.logstash.logback.pattern.LoggingEventJsonPatternParser,com.fasterxml.jackson.databind.cfg.BaseSettings,com.fasterxml.jackson.databind.type.SimpleType,net.logstash.logback.Logback11Support,com.fasterxml.jackson.annotation.JsonSetter$Value,net.logstash.logback.pattern.AbstractJsonPatternParser,com.fasterxml.jackson.databind.deser.std.StdDeserializer,com.fasterxml.jackson.databind.cfg.MapperConfigBase,com.fasterxml.jackson.core.io.CharTypes,com.fasterxml.jackson.databind.cfg.MapperConfig,com.fasterxml.jackson.databind.DeserializationConfig,com.fasterxml.jackson.databind.ObjectMapper,com.fasterxml.jackson.databind.MappingJsonFactory,com.fasterxml.jackson.databind.ser.BeanSerializerFactory,com.fasterxml.jackson.databind.cfg.ContextAttributes$Impl,com.fasterxml.jackson.core.JsonFactory,com.fasterxml.jackson.databind.deser.BeanDeserializerFactory,com.fasterxml.jackson.databind.ser.BasicSerializerFactory,com.fasterxml.jackson.databind.SerializationConfig,com.fasterxml.jackson.annotation.JsonInclude$Value,com.fasterxml.jackson.databind.type.TypeFactory,com.fasterxml.jackson.databind.introspect.BasicClassIntrospector,com.fasterxml.jackson.databind.introspect.VisibilityChecker$Std
+							</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+						</env>
+					</image>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.experimental</groupId>
+				<artifactId>spring-aot-maven-plugin</artifactId>
+				<version>0.9.1</version>
+				<executions>
+					<execution>
+						<id>test-generate</id>
+						<goals>
+							<goal>test-generate</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -104,8 +138,8 @@
 							<to>
 								<image>docker.io/jpolivo/reactive-r2dbc</image>
 								<auth>
-									<username></username>
-									<password></password>
+									<username>jpolivo</username>
+									<password>Natalia01</password>
 								</auth>
 							</to>
 						</configuration>
@@ -114,5 +148,42 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-release</id>
+			<name>Spring release</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-snapshot</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	<repositories>
+		<repository>
+			<id>spring-release</id>
+			<name>Spring release</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-snapshot</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 </project>
